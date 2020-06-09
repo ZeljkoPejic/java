@@ -14,7 +14,7 @@ public class ZD02 {
 
 			if (broj > 5 || broj < 1) {
 				
-				System.out.println("Nije dobar broj unesi opet");
+				System.out.println("Nije dobar broj, unesi opet");
 			} else {
 
 				flag = false;
