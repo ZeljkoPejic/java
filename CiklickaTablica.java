@@ -1,140 +1,95 @@
 package sve;
 
-import java.util.Arrays;
-
 import javax.swing.JOptionPane;
 
 public class CiklickaTablica {
 
+	static boolean check(int first, int second) {
+		return first == second ? true : false;
+	}
+
 	public static void main(String[] args) {
 
-		int rows = Integer.parseInt(JOptionPane.showInputDialog("Unesi broj redova"));
-		int columns = Integer.parseInt(JOptionPane.showInputDialog("Unesi broj stupaca"));
+		int rows, columns;
 
-		int columnsO = columns;
-		int rowsO = rows;
+		while (true) {
+			rows = Integer.parseInt(JOptionPane.showInputDialog("Unesi broj redova"));
+			columns = Integer.parseInt(JOptionPane.showInputDialog("unesi broj stupaca"));
 
-		int[][] table = new int[rows][columns];
+			if (rows > 0 && columns > 0) {
+				break;
+			} else {
+				JOptionPane.showMessageDialog(null, "Molimo unesite pozitivan broj");
+			}
+
+		}
 
 		System.out.print("----------------------------------\n");
 		System.out.print("|BROJ REDOVA: " + rows + " |BROJ STUPACA: " + columns + " |\n");
 		System.out.print("----------------------------------\n");
 		System.out.println();
 
-				
-		int counter = 1;
-		boolean flagMain = true;
-		int vecemanjeI = 0;
-		int vecemanjeJ = 0;
-		rows = rows - 1;
-		columns = columns - 1;
+		int[][] matrica = new int[rows][columns];
+		int x = rows - 1, y = columns;
+		int i = 0, a = 0, b = 0;
+		int product = rows * columns;
 
-		table: while (flagMain) {
+		izlaz: while (true) {
 
-			boolean flag1 = true;
-			boolean flag2 = false;
-			boolean flag3 = false;
-			boolean flag4 = false;
+			while (y > a) {
 
-			int i = rows;
-			int j = columns;
+				matrica[x][--y] = ++i;
+				if (check(i, product))
+					break izlaz;
 
-			izlaz: for (; i >= vecemanjeI; i--) {
+			}
 
-				while (flag2) {
+			while (x > a) {
 
-					j = vecemanjeJ;
-					table[i][j] = counter;
-					counter++;
-					if(counter==columnsO*rowsO+1){
-                        break table;
-                    }
-					if (i == vecemanjeI) {
-						flag1 = false;
-						flag2 = false;
-						flag3 = true;
-						
-					}
-					break;
+				matrica[--x][y] = ++i;
+				if (check(i, product))
+					break izlaz;
 
-				}
-
-				while (flag4) {
-
-					j = columns;
-
-					i++;
-					table[i][j] = counter;
-					counter++;
-					if (i == rows - 1) { // i= 2
-						flag4 = false; // Nepotrebno
-						rows = rows - 1;
-						columns = columns - 1;
-						vecemanjeI++;
-						vecemanjeJ++;
-
-						break izlaz;
-
-					}
-
-				}
-
-				for (; j >= vecemanjeJ; j--) { // j=3
-
-					while (flag3) {
-
-						j++;
-						table[i][j] = counter;
-						counter++;
-						// j++;
-
-						if (counter == columnsO * rowsO + 1) {
-							break table;
-						}
-						if (j == columns) {
-
-							i = vecemanjeI + 1;
-							flag4 = true;
-							flag3 = false;
-						
-						}
-
-					}
-
-					while (flag1) {
-
-						table[i][j] = counter;
-						counter++;
-						if (j == vecemanjeJ) {
-							flag1 = false;
-							flag2 = true;
-						}
-
-						break;
-
-					}
-
+				if (x == a) {
+					a++;
 				}
 
 			}
-			if (counter == columnsO * rowsO + 1) {
-				flagMain = false;
+
+			while (y < columns - a) {
+
+				matrica[x][++y] = ++i;
+				if (check(i, product))
+					break izlaz;
+				if (y == columns - a) {
+					rows = rows - 1;
+				}
 			}
+
+			while (x < rows - b) {
+
+				matrica[++x][y] = ++i;
+				if (check(i, product))
+					break izlaz;
+				if (x == rows - 1) {
+					b++;
+				}
+
+			}
+
 		}
 
-		for (int i = 0; i < table.length; i++) {
+		for (i = 0; i < matrica.length; i++) {
 
-			for (int j = 0; j < table[i].length; j++) {
+			for (int j = 0; j < matrica[i].length; j++) {
 
-				if (j < 10) {
-					System.out.print("|  " + table[i][j]);
-				} else if (j >= 10 && j < 100) {
-					System.out.print("| " + table[i][j]);
+				if (matrica[i][j] >= 10) {
+					System.out.print(" " + matrica[i][j] + " ");
 				} else {
-					System.out.print("|" + table[i][j]);
+					System.out.print(" " + matrica[i][j] + "  ");
 				}
 			}
-			System.out.print("|");
+
 			System.out.println();
 
 		}
