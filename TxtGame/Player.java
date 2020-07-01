@@ -2,22 +2,16 @@ package game;
 
 public class Player {
 
-	
-	
 	private String name;
 	private Race race;
-	
+	private Integer gold;
 		
-	
 	public Player(String name, Race race) {
 		
 		this.name = name;
 		this.race = race;
+		this.gold = 10;
 	}
-
-
-
-
 
 	public String getName() {
 		return name;
@@ -26,7 +20,10 @@ public class Player {
 	public Race getRace() {
 		return race;
 	}
-
+	
+	public Integer getGold() {
+		return gold;
+	}
 	
 	@Override
 	public String toString() {
@@ -34,7 +31,5 @@ public class Player {
 		return " Player name: "+ name + race.toString();
 	
 	}
-	
-	
-	
+		
 }

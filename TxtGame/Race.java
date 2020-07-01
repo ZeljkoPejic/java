@@ -6,16 +6,8 @@ public class Race extends Stats{
 	private String name;
 	
 	
-	public Race() {
-		super();
-		name="Unknown";
-		
-	}
-
-
-
 	public Race(String name) {
-		super();
+		
 		this.name=name;
 		
 		switch(name) {

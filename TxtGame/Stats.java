@@ -7,21 +7,31 @@ public abstract class Stats {
 	private Integer strength;
 	private Integer agility;
 	private Integer intelligence;
-
 	
-	protected void setHitPoints(Integer hitPoints) {
+	public Stats() {
+		
+	}
+	
+	public Stats(Integer hitPoints, Integer strength, Integer agility, Integer intelligence) {
+		this.hitPoints = hitPoints;
+		this.strength = strength;
+		this.agility = agility;
+		this.intelligence = intelligence;
+	}
+
+	public void setHitPoints(Integer hitPoints) {
 		this.hitPoints = hitPoints;
 	}
 
-	protected void setStrength(Integer strength) {
+	public void setStrength(Integer strength) {
 		this.strength = strength;
 	}
 
-	protected void setAgility(Integer agility) {
+	public void setAgility(Integer agility) {
 		this.agility = agility;
 	}
 
-	protected void setIntelligence(Integer intelligence) {
+	public void setIntelligence(Integer intelligence) {
 		this.intelligence = intelligence;
 	}
 
