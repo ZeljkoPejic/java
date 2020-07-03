@@ -76,7 +76,7 @@ public class Student {
 	@Override
 	public String toString() {
 	
-		return null;
+		return sifra + " " + prodan.toString() + " " + adresa + " " + iznos + " " + kolicina + " " + twitter + " " + smjer.toString();
 	}
 	
 }
