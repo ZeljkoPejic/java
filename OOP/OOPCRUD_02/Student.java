@@ -15,7 +15,9 @@ public class Student {
 	private Smjer smjer;
 	
 	
-	
+	public Student() {
+		
+	}
 	
 	
 	public Student(Integer sifra, Date prodan, String adresa, BigDecimal iznos, BigDecimal kolicina, String twitter,
@@ -76,7 +78,7 @@ public class Student {
 	@Override
 	public String toString() {
 	
-		return sifra + " " + prodan.toString() + " " + adresa + " " + iznos + " " + kolicina + " " + twitter + " " + smjer.toString();
+		return sifra + " " + prodan.getDay()+"-"+prodan.getMonth()+"-"+prodan.getYear() + " " + adresa + " " + iznos + " " + kolicina + " " + twitter + " " + smjer.toString();
 	}
 	
 }

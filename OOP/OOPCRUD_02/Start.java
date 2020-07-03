@@ -2,6 +2,7 @@ package edunova.student;
 
 // 1. početak 02.07 - 21:40  ...   stop 03.07 - 1:19
 // 2. početak 03.07 - 13:50  ...  (pauza 14:25 - 14:45) stop 03.07 - 15:33
+// 3. početak 03.07 - 16:39  ...   stop 03.07 - 17:32
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -64,23 +65,63 @@ public class Start {
 
 	private void brisanjeStudenta() {
 
-		int sifra = HelpMethods.unosBroja("Unesite sifru studenta kojeg želite obrisati");
+		int sifra = HelpMethods.unosBroja("Unesite sifru studenta kojeg želite obrisati( za brisanje svih 411 )");
 
-		if (HelpMethods.prisutan("Jeste li sigurni da želite obristi studenta pod šifrom " + studenti.get(sifra - 1).getSifra())) {
-			studenti.remove(sifra - 1);
-			System.out.println("Student je uspješno obrisan");
+		if (sifra == 411) {
+			studenti.clear();
+			return;
 		}
-		
 
+		for (Student s : studenti) {
+
+			if (s.getSifra().equals(sifra)
+					&& HelpMethods.prisutan("Jeste li sigurni da želite obristi studenta pod šifrom " + s.getSifra())) {
+				studenti.remove(s);
+				System.out.println("Student je uspješno obrisan");
+				return;
+
+			}
+
+		}
 	}
 
 	private void promjenaStudenta() {
+
+		int sifra = HelpMethods.unosBroja("Unesite šifru studenta za promjenu");
+
+		// Student s = new Student();
+
+		try {
+
+			for (Student s : studenti) {
+				if (s.getSifra().equals(sifra)) {
+
+					s.setProdan(new Date(HelpMethods.unosBroja("Unesi godinu"), HelpMethods.unosBroja("Unesi mjesec"),
+							HelpMethods.unosBroja("Unesi dan")));
+					s.setAdresa(HelpMethods.unosString("Unesi adresu"));
+					s.setIznos(HelpMethods.unosDecimal("Unesi iznos"));
+					s.setKolicina(HelpMethods.unosDecimal("Unesi količinu"));
+					s.setTwitter(HelpMethods.unosString("Unesi twitter"));
+					s.setSmjer(unosSmjer());
+					System.out.println("Promjena je uspješna");
+
+				}
+			}
+
+		} catch (Exception e) {
+
+			JOptionPane.showMessageDialog(null, "Student pod tom šifrom ne postoji");
+
+		}
 
 	}
 
 	private void ispisStudenta() {
 
 		System.out.println("------ISPIS------");
+		if (studenti.isEmpty()) {
+			System.out.println("LISTA JE PRAZNA!");
+		}
 		for (Student s : studenti) {
 
 			System.out.println(s);
@@ -152,7 +193,7 @@ public class Start {
 
 		for (Student s : studenti) {
 			suma += s.getSmjer().zbrojStringa();
-			System.out.println("Količina studenta pod sifrom " + s.getSifra() + " iznosi " + s.getKolicina());
+			System.out.println("Količina studenta pod šifrom " + s.getSifra() + " iznosi " + s.getKolicina());
 		}
 
 		System.out.println("Zbroj svih nizova u klasi smjer iznosi: " + suma);

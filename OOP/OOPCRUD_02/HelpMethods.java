@@ -96,7 +96,7 @@ public class HelpMethods {
 		
 		String[] boje = new String[] {"Crvena","Plava","Crna","Roza","Bijela"};
 		
-		return boje[(int)(Math.random()*((4 - 0) + 1)) + 0];
+		return boje[(int)(Math.random()*(4 + 1))];
 		
 		
 	}
@@ -110,7 +110,7 @@ public class HelpMethods {
 		
 		String[] mjesto = new String[] {"mix457","blizu","5d6a7l8j","tu","kafe"};
 		
-		return mjesto[(int)(Math.random()*((4 - 0) + 1)) + 0];
+		return mjesto[(int)(Math.random()*(4 + 1))];
 		
 	}
 }
