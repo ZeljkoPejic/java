@@ -5,6 +5,7 @@ package edunova.student;
 // 3. početak 03.07 - 16:39  ...   stop 03.07 - 17:32
 
 import java.math.BigDecimal;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -15,6 +16,7 @@ public class Start {
 	private int studId = 1;
 	private int smjerId = 1;
 	private List<Student> studenti = new ArrayList<Student>();
+	
 
 	public Start() {
 
@@ -51,7 +53,10 @@ public class Start {
 
 		do {
 
-			Date datum = new Date(HelpMethods.godina(), HelpMethods.mjesec(), HelpMethods.dan());
+			//Date datum = new Date(HelpMethods.godina(), HelpMethods.mjesec(), HelpMethods.dan());
+			SimpleDateFormat datum = new SimpleDateFormat("dd-MM-yyyy");
+			String date=datum.format(new Date());
+			
 			Smjer smjer = new Smjer(smjerId++, HelpMethods.boja(), HelpMethods.mreznoMjesto(), "0982256458", 1, true);
 
 			Student stud = new Student(studId++, datum, "K.Tomislava", new BigDecimal(1000), HelpMethods.kolicina(),
@@ -88,6 +93,8 @@ public class Start {
 	private void promjenaStudenta() {
 
 		int sifra = HelpMethods.unosBroja("Unesite šifru studenta za promjenu");
+		SimpleDateFormat datum = new SimpleDateFormat("dd-MM-yyyy");
+		String date=datum.format(new Date());
 
 		// Student s = new Student();
 
@@ -96,8 +103,7 @@ public class Start {
 			for (Student s : studenti) {
 				if (s.getSifra().equals(sifra)) {
 
-					s.setProdan(new Date(HelpMethods.unosBroja("Unesi godinu"), HelpMethods.unosBroja("Unesi mjesec"),
-							HelpMethods.unosBroja("Unesi dan")));
+					s.setProdan(datum);
 					s.setAdresa(HelpMethods.unosString("Unesi adresu"));
 					s.setIznos(HelpMethods.unosDecimal("Unesi iznos"));
 					s.setKolicina(HelpMethods.unosDecimal("Unesi količinu"));
@@ -132,8 +138,8 @@ public class Start {
 
 	private void unosStudenta() {
 
-		Date datum = new Date(HelpMethods.unosBroja("Unesi godinu"), HelpMethods.unosBroja("Unesi mjesec"),
-				HelpMethods.unosBroja("Unesi dan"));
+		SimpleDateFormat datum = new SimpleDateFormat("dd-MM-yyyy");
+		String date=datum.format(new Date());
 
 		Student student = new Student(studId++, datum, HelpMethods.unosString("Unesi adresu"),
 				HelpMethods.unosDecimal("Unesi iznos"), HelpMethods.unosDecimal("Unesi količinu"),

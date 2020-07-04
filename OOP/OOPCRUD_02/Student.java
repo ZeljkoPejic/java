@@ -1,13 +1,14 @@
 package edunova.student;
 
 import java.math.BigDecimal;
-import java.util.Date;
+import java.text.SimpleDateFormat;
+
 
 public class Student {
 
 	
 	private Integer sifra;
-	private Date prodan;
+	private SimpleDateFormat prodan;
 	private String adresa;
 	private BigDecimal iznos;
 	private BigDecimal kolicina;
@@ -20,7 +21,7 @@ public class Student {
 	}
 	
 	
-	public Student(Integer sifra, Date prodan, String adresa, BigDecimal iznos, BigDecimal kolicina, String twitter,
+	public Student(Integer sifra, SimpleDateFormat prodan, String adresa, BigDecimal iznos, BigDecimal kolicina, String twitter,
 			Smjer smjer) {
 		this.sifra = sifra;
 		this.prodan = prodan;
@@ -37,10 +38,10 @@ public class Student {
 	public void setSifra(Integer sifra) {
 		this.sifra = sifra;
 	}
-	public Date getProdan() {
+	public SimpleDateFormat getProdan() {
 		return prodan;
 	}
-	public void setProdan(Date prodan) {
+	public void setProdan(SimpleDateFormat prodan) {
 		this.prodan = prodan;
 	}
 	public String getAdresa() {
@@ -78,7 +79,7 @@ public class Student {
 	@Override
 	public String toString() {
 	
-		return sifra + " " + prodan.getDay()+"-"+prodan.getMonth()+"-"+prodan.getYear() + " " + adresa + " " + iznos + " " + kolicina + " " + twitter + " " + smjer.toString();
+		return sifra + " " + prodan.toString() + " " + adresa + " " + iznos + " " + kolicina + " " + twitter + " " + smjer.toString();
 	}
 	
 }

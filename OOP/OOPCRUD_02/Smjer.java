@@ -7,9 +7,9 @@ public class Smjer {
 	private String mreznoMjesto;
 	private String telefon;
 	private Integer broj;
-	private boolean prisutan;
+	private Boolean prisutan;
 
-	public Smjer(Integer sifra, String boja, String mreznoMjesto, String telefon, Integer broj, boolean prisutan) {
+	public Smjer(Integer sifra, String boja, String mreznoMjesto, String telefon, Integer broj, Boolean prisutan) {
 		this.sifra = sifra;
 		this.boja = boja;
 		this.mreznoMjesto = mreznoMjesto;
@@ -58,11 +58,11 @@ public class Smjer {
 		this.broj = broj;
 	}
 
-	public boolean isPrisutan() {
+	public Boolean isPrisutan() {
 		return prisutan;
 	}
 
-	public void setPrisutan(boolean prisutan) {
+	public void setPrisutan(Boolean prisutan) {
 		this.prisutan = prisutan;
 	}
 
