@@ -1,6 +1,7 @@
 package edunova.soba;
 
-import java.text.SimpleDateFormat;
+
+import java.util.Date;
 
 public class Soba {
 	
@@ -8,10 +9,10 @@ public class Soba {
 	
 	private String sifra;
 	private Boolean zabranjen;
-	private SimpleDateFormat napravljen;
-	private SimpleDateFormat posuden;
+	private Date napravljen;
+	private Date posuden;
 	private String postanskiBroj;
-	private SimpleDateFormat kreiran;
+	private Date kreiran;
 	private Program program;
 	
 	
@@ -28,16 +29,16 @@ public class Soba {
 	public void setZabranjen(Boolean zabranjen) {
 		this.zabranjen = zabranjen;
 	}
-	public SimpleDateFormat getNapravljen() {
+	public Date getNapravljen() {
 		return napravljen;
 	}
-	public void setNapravljen(SimpleDateFormat napravljen) {
+	public void setNapravljen(Date napravljen) {
 		this.napravljen = napravljen;
 	}
-	public SimpleDateFormat getPosuden() {
+	public Date getPosuden() {
 		return posuden;
 	}
-	public void setPosuden(SimpleDateFormat posuden) {
+	public void setPosuden(Date posuden) {
 		this.posuden = posuden;
 	}
 	public String getPostanskiBroj() {
@@ -46,10 +47,10 @@ public class Soba {
 	public void setPostanskiBroj(String postanskiBroj) {
 		this.postanskiBroj = postanskiBroj;
 	}
-	public SimpleDateFormat getKreiran() {
+	public Date getKreiran() {
 		return kreiran;
 	}
-	public void setKreiran(SimpleDateFormat kreiran) {
+	public void setKreiran(Date kreiran) {
 		this.kreiran = kreiran;
 	}
 	public Program getProgram() {
@@ -74,7 +75,7 @@ public class Soba {
 	@Override
 	public String toString() {
 	
-		return sifra+" "+zabranjen+" "+napravljen.toLocalizedPattern()+" "+posuden.toLocalizedPattern()+" "+postanskiBroj+" "+kreiran.toLocalizedPattern()+" "+program.toString();
+		return sifra+" "+zabranjen+" "+napravljen.toString()+" "+posuden.toString()+" "+postanskiBroj+" "+kreiran.toString()+" "+program.toString();
 	}
 	
 }
