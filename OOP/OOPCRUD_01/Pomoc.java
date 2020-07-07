@@ -1,10 +1,7 @@
 package edunova.soba;
 
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-
-import java.util.Date;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 
 import javax.swing.JOptionPane;
 
@@ -41,10 +38,10 @@ public class Pomoc {
 		}
 
 	}
-	
+
 	public static int unosBroj(String poruka) {
-		
-		while(true) {
+
+		while (true) {
 			try {
 				return Integer.parseInt(JOptionPane.showInputDialog(poruka));
 			} catch (Exception e) {
@@ -71,20 +68,24 @@ public class Pomoc {
 
 	}
 
-	public static Date datum() {
+	public static LocalDate unosDatum(String poruka) {
 
-//		SimpleDateFormat date = new SimpleDateFormat("dd-MM-yyyy");
-//		Date dat = new Date();
-//		dat.
-//		date.format(dat);
-//
-//		return dat;
-		
-		
-		SimpleDateFormat dat = new SimpleDateFormat("dd-MM-yyyy");	
-		Date datum = new Date();
-		datum = dat.get2DigitYearStart();
-		return datum;
+		String datum;
+		LocalDate date;
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+
+		while (true) {
+
+			datum = JOptionPane.showInputDialog(poruka);
+
+			try {
+				return date = LocalDate.parse(datum, formatter);
+
+			} catch (Exception e) {
+				JOptionPane.showMessageDialog(null, "Krivi unos");
+			}
+
+		}
 
 	}
 
@@ -93,7 +94,7 @@ public class Pomoc {
 		String s;
 		while (true) {
 			s = JOptionPane.showInputDialog(poruka);
-			if (s.trim().isEmpty() && !s.matches("[0-9]")) {
+			if (s.trim().isEmpty() && !s.matches("[0-9]") && s.matches("[a-z]")) {
 				JOptionPane.showMessageDialog(null, "Krivi unos");
 				continue;
 			}
@@ -118,29 +119,31 @@ public class Pomoc {
 
 	}
 
-	public static Date randomDatum() {
+	public static LocalDate randomDatum() {
 
-//		SimpleDateFormat dat = new SimpleDateFormat("dd-MM-yyyy");
-//		Date datum = new Date();
-//		dat.format(datum);
-//
-//		return datum;
-		
-		String[] s = new String[] {"12-03-1991","05-07-2000","21-05-1998","20-12-2005","13-11-1990","26-02-2012"};
-		
-		Date d = stringToDateReport(s[(int)(Math.random() * 6 )]);
-		
-		
-		return  d;
-		
+		String[] s = new String[] { "12-03-1991", "05-07-2000", "21-05-1998", "20-12-2005", "13-11-1990", "26-02-2012",
+				"13-01-1998", "27-09-2001" };
 
+		LocalDate date = null;
+
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+
+		date = LocalDate.parse(s[randomNum(8, 1)], formatter);
+
+		return date;
+
+	}
+
+	public static int randomNum(int max, int min) {
+
+		return (int) (Math.random() * (max - min) + min);
 	}
 
 	public static String randomString() {
 
 		String[] s = new String[] { "Omega", "Nesto", "Pero", "Mojaso", "Naztiv", "Nazovi" };
 
-		return s[(int) ((Math.random() * (5 - 1)) + 1)];
+		return s[randomNum(6, 1)];
 	}
 
 	public static String randomTelefon() {
@@ -148,32 +151,13 @@ public class Pomoc {
 		String[] s = new String[] { "09814578932", "0995458798", "09112457896", "0995254879", "09845789654",
 				"09154236879" };
 
-		return s[(int) ((Math.random() * (5 - 1)) + 1)];
+		return s[randomNum(6, 1)];
 	}
 
 	public static String randomPostanskiBroj() {
-		String[] s = new String[] { "36000", "689654", "36548", "457896", "354214",
-				"36363" };
+		String[] s = new String[] { "36000", "689654", "36548", "457896", "354214", "36363" };
 
-		return s[(int) ((Math.random() * (5 - 1)) + 1)];
-	}
-	
-	public static Date stringToDateReport(String s){
-	    DateFormat format;
-	    Date date = null;
-
-	    format = new SimpleDateFormat("dd-MM-yyyy");
-
-	    if(s.length()==4) {
-	        format = new SimpleDateFormat("yyyy");
-	    }
-	    try {
-	        date = (Date)format.parse(s);
-	    } catch (ParseException e) {
-	        
-	        e.printStackTrace();
-	    }
-	    return date;
+		return s[randomNum(6, 1)];
 	}
 
 }

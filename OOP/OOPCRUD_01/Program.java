@@ -1,7 +1,8 @@
 package edunova.soba;
 
 
-import java.util.Date;
+import java.time.LocalDate;
+
 
 public class Program {
 
@@ -10,7 +11,7 @@ public class Program {
 	private String sifra;
 	private Boolean obrisan;
 	private String naziv;
-	private Date datum;
+	private LocalDate datum;
 	private String prezime;
 	private String mobitel;
 
@@ -38,11 +39,12 @@ public class Program {
 		this.naziv = naziv;
 	}
 
-	public Date getDatum() {
+	public LocalDate getDatum() {
+		
 		return datum;
 	}
 
-	public void setDatum(Date datum) {
+	public void setDatum(LocalDate datum) {
 		this.datum = datum;
 	}
 
@@ -71,7 +73,7 @@ public class Program {
 	@Override
 	public String toString() {
 
-		return sifra+" "+obrisan+" "+naziv+" "+datum.toString()+" "+prezime+" "+mobitel;
+		return sifra+" "+obrisan+" "+naziv+" "+datum+" "+prezime+" "+mobitel;
 	}
 
 }

@@ -1,6 +1,7 @@
 package edunova.soba;
 
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -61,24 +62,38 @@ public class Start {
 
 	private void izlaz() {
 
+		LocalDate minDatum=null;
+		LocalDate tempDatum=null;
 		System.out.println("Doviđenja");
 		for(Soba s : sobe) {
 			
-			System.out.println("Soba pod šifrom "+s.getSifra()+" posuden: "+s.getPosuden());
+			System.out.println("Soba pod šifrom "+s.getSifra()+" posuđen: "+s.getPosuden());
+			minDatum = s.getProgram().getDatum();
 			
 		}
+		
+		for(Soba s : sobe) {
+			
+			tempDatum = s.getProgram().getDatum();
+			
+			if(minDatum.getYear() > tempDatum.getYear()) {
+				minDatum=tempDatum;
+			}
+		}
+		System.out.println("Najmanji uneseni datum je: "+minDatum);
+		
 		
 
 	}
 
 	private void brisanjeSobe() {
 
-		int id = Pomoc.unosBroj("Unesi šifru osobe koju želiš obrisati");
+		int id = Pomoc.unosBroj("Unesi šifru sobe koju želiš obrisati");
 
 		for (Soba s : sobe) {
 
 			if (s.getSifra().equals(String.valueOf(id))
-					&& Pomoc.provjera("Jesi li siguran da želiš obrisati sobu pod šifrom " + s.getSifra())) {
+					&& Pomoc.provjera("Jesi li siguran da želiš obrisati sobu pod šifrom " + s.getSifra()+" ? Da ili Ne?")) {
 				sobe.remove(id - 1);
 				System.out.println("Soba je obrisana!");
 				return;
@@ -90,6 +105,21 @@ public class Start {
 
 	private void promjenaSobe() {
 
+		int id;
+		while(true) {
+			id = Pomoc.unosBroj("Unesi šifru sobe koju želiš promjeniti");
+			
+			for(Soba soba : sobe) {
+				
+				if(soba.getSifra().equals(String.valueOf(id))) {
+					unosSobe(soba);
+					return;
+				}
+				
+			}
+			JOptionPane.showMessageDialog(null, "Soba pod tom šifrom ne postoji");
+		}
+		
 	}
 
 	private void ispisSoba() {
@@ -107,17 +137,37 @@ public class Start {
 
 		soba.setSifra();
 		soba.setZabranjen(Pomoc.provjera("Je li soba zabranjena? Da ili Ne?"));
-		soba.setNapravljen(Pomoc.datum());
-		soba.setPosuden(Pomoc.datum());
+		soba.setNapravljen(Pomoc.unosDatum("Unesi datum\n( oblik npr 11-05-1990 dan-mjesec-godina )"));
+		soba.setPosuden(Pomoc.unosDatum("Unesi datum\n( oblik npr 11-05-1990 dan-mjesec-godina )"));
 		soba.setPostanskiBroj(Pomoc.unosString("Unesi poštanski broj"));
-		soba.setKreiran(Pomoc.datum());
+		soba.setKreiran(Pomoc.unosDatum("Unesi datum\n( oblik npr 11-05-1990 dan-mjesec-godina )"));
 		soba.setProgram(unosProgram());
 
 		sobe.add(soba);
 
 		System.out.println("Soba je uspješno kreirana");
 
+		
 	}
+	private void unosSobe(Soba soba) {
+
+		//Soba soba = new Soba();
+
+		
+		soba.setZabranjen(Pomoc.provjera("Je li soba zabranjena? Da ili Ne?"));
+		soba.setNapravljen(Pomoc.unosDatum("Unesi datum\n( oblik npr 11-05-1990 dan-mjesec-godina )"));
+		soba.setPosuden(Pomoc.unosDatum("Unesi datum\n( oblik npr 11-05-1990 dan-mjesec-godina )"));
+		soba.setPostanskiBroj(Pomoc.unosString("Unesi poštanski broj"));
+		soba.setKreiran(Pomoc.unosDatum("Unesi datum\n( oblik npr 11-05-1990 dan-mjesec-godina )"));
+		soba.setProgram(unosProgram());
+
+		
+
+		System.out.println("Promjena je upješna!");
+
+	}
+	
+	
 
 	private void izbornik() {
 
@@ -143,7 +193,7 @@ public class Start {
 		program.setSifra();
 		program.setObrisan(Pomoc.provjera("Je li program obrisan? Da ili Ne?"));
 		program.setNaziv(Pomoc.unosString("Unesi naziv za program"));
-		program.setDatum(Pomoc.datum());
+		program.setDatum(Pomoc.unosDatum("Unesi datum\n( oblik npr 11-05-1990 dan-mjesec-godina )"));
 		program.setPrezime(Pomoc.unosString("Unesi prezime za program"));
 		program.setMobitel(Pomoc.unosTelefona("Unesi broj telefona za program"));
 
