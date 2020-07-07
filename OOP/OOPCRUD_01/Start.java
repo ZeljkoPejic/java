@@ -75,10 +75,11 @@ public class Start {
 		for(Soba s : sobe) {
 			
 			tempDatum = s.getProgram().getDatum();
-			
-			if(minDatum.getYear() > tempDatum.getYear()) {
+		
+			if(minDatum.compareTo(tempDatum)>0) {
 				minDatum=tempDatum;
 			}
+
 		}
 		System.out.println("Najmanji uneseni datum je: "+minDatum);
 		
