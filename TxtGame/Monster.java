@@ -14,12 +14,14 @@ public class Monster extends Stats{
 		return name;
 	}
 
-	public void setName(String name) {
-		this.name = name;
+	
+
+	@Override
+	public String toString() {
+	
+		
+		return name;
 	}
-	
-	
-	
 	
 	
 }
