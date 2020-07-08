@@ -152,18 +152,14 @@ public class Start {
 	}
 	private void unosSobe(Soba soba) {
 
-		//Soba soba = new Soba();
-
-		
+				
 		soba.setZabranjen(Pomoc.provjera("Je li soba zabranjena? Da ili Ne?"));
 		soba.setNapravljen(Pomoc.unosDatum("Unesi datum\n( oblik npr 11-05-1990 dan-mjesec-godina )"));
 		soba.setPosuden(Pomoc.unosDatum("Unesi datum\n( oblik npr 11-05-1990 dan-mjesec-godina )"));
 		soba.setPostanskiBroj(Pomoc.unosString("Unesi poštanski broj"));
 		soba.setKreiran(Pomoc.unosDatum("Unesi datum\n( oblik npr 11-05-1990 dan-mjesec-godina )"));
-		soba.setProgram(unosProgram());
-
+		soba.setProgram(unosProgram(soba.getProgram()));
 		
-
 		System.out.println("Promjena je upješna!");
 
 	}
@@ -192,6 +188,20 @@ public class Start {
 
 		Program program = new Program();
 		program.setSifra();
+		program.setObrisan(Pomoc.provjera("Je li program obrisan? Da ili Ne?"));
+		program.setNaziv(Pomoc.unosString("Unesi naziv za program"));
+		program.setDatum(Pomoc.unosDatum("Unesi datum\n( oblik npr 11-05-1990 dan-mjesec-godina )"));
+		program.setPrezime(Pomoc.unosString("Unesi prezime za program"));
+		program.setMobitel(Pomoc.unosTelefona("Unesi broj telefona za program"));
+
+		return program;
+
+	}
+	
+	private Program unosProgram(Program program) {
+
+		
+		
 		program.setObrisan(Pomoc.provjera("Je li program obrisan? Da ili Ne?"));
 		program.setNaziv(Pomoc.unosString("Unesi naziv za program"));
 		program.setDatum(Pomoc.unosDatum("Unesi datum\n( oblik npr 11-05-1990 dan-mjesec-godina )"));
