@@ -2,7 +2,6 @@ package game;
 
 import java.util.ArrayList;
 import java.util.List;
-
 import javax.swing.JOptionPane;
 
 public class Start {
@@ -12,6 +11,7 @@ public class Start {
 	List<Monster> monsters = new ArrayList<Monster>();
 	List<Monster> bosses = new ArrayList<Monster>();
 	List<Level> levels = new ArrayList<Level>();
+	List<Item> items = new ArrayList<Item>();
 
 	public Start() {
 
@@ -71,6 +71,7 @@ public class Start {
 		switch(choice) {
 		
 		case 1:
+			buy();
 			break;
 		case 2:
 			break;
@@ -87,10 +88,33 @@ public class Start {
 		}
 	}
 
-	// need to rework so it cant get over maxHp
+	
+	private void buy() {
+		
+		int choice = Help.insertNum("Take a look...\nFound something?");
+		
+		switch(choice) {
+		
+		case 1:
+		break;
+		case 2:
+			break;
+		case 3:
+			break;
+		case 4:
+			break;
+		case 5:
+			break;
+		case 6:
+			break;
+		}
+		
+		
+	}
+
 	private void rest() {
 		
-		if(player.getHitPoints()>=90) {
+		if(player.getHitPoints()>=player.getHitPoints()-10) {
 			JOptionPane.showMessageDialog(null, "You took a nap");
 			return;
 		}
@@ -106,7 +130,7 @@ public class Start {
 		int rand = Help.randomNum(10, 1);
 		
 		if (rand <= 8) {
-			choice = Help.insertNum("You stumble upon a monster ? what will you do?\n(If u choose to fight you may later have prob to runaway)\n 1 - Fight\n 2 - Run");
+			choice = Help.insertNum("You stumble upon a monster ? what will you do?\n(If u choose to fight you may later have a problem to runaway)\n 1 - Fight\n 2 - Run");
 
 			if (choice.equals(1)) {
 
@@ -195,6 +219,31 @@ public class Start {
 		levels.add(level);
 		level = new Level(3, 5000);
 		
+		
+		// generate Items
+		Item item = new Item("Small potion", 5);
+		item.setHitPoints(15);
+		items.add(item);
+		item = new Item("Medium potion", 10);
+		item.setHitPoints(30);
+		items.add(item);
+		item = new Item("Big potion", 20);
+		item.setHitPoints(45);
+		items.add(item);
+		item = new Item("Sword", 10);
+		item.setHitPoints(5);
+		item.setStrength(2);
+		items.add(item);
+		item = new Item("Axe", 15);
+		item.setStrength(4);
+		items.add(item);
+		item = new Item("Armor", 35);
+		item.setHitPoints(20);
+		items.add(item);
+		
+		
+		
+		
 
 	}
 
@@ -205,7 +254,7 @@ public class Start {
 
 		Monster monster = monsters.get(Help.randomNum(8, 1));
 		Integer monsterHp = monster.getHitPoints();
-		System.out.println("You stumble upon monster - " + monster.getName());
+		System.out.println("You stumble upon a monster named - " + monster.getName());
 
 		// if you choose to FIGHT
 		while (player.getHitPoints() > 0 && monsterHp > 0) {
@@ -232,13 +281,14 @@ public class Start {
 				monsterHp = monsterHp - player.getStrength();
 				if (monsterHp > 0) {
 					player.setHitPoints(player.getHitPoints() - monster.getStrength());
+					Help.battleLog(player, monster);
 				} else {
 					score+=50;
 					JOptionPane.showMessageDialog(null, "You slayed " + monster.getName());
 					return;
 				}
 
-				Help.battleLog(player, monster);
+				
 
 			}
 
