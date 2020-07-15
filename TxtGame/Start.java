@@ -1,17 +1,19 @@
 package game;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import javax.swing.JOptionPane;
 
 public class Start {
 
 	Player player = createPlayer();
-	private Integer score;
+	private Integer score=0;
 	List<Monster> monsters = new ArrayList<Monster>();
 	List<Monster> bosses = new ArrayList<Monster>();
 	List<Level> levels = new ArrayList<Level>();
 	List<Item> items = new ArrayList<Item>();
+	List<Item> inventory = new ArrayList<Item>();
 
 	public Start() {
 
@@ -44,7 +46,7 @@ public class Start {
 	}
 
 	private void playerInfo() {
-		
+
 		JOptionPane.showMessageDialog(null, player);
 
 	}
@@ -59,100 +61,132 @@ public class Start {
 
 	}
 
+	// ---------------------------------
+	// Methods used for TAVERN action
+	// ---------------------------------
+
 	private void tavern() {
-		
-		int choice =  Help.insertNum("Welcome adventurer! How can i help you?\n 1 - Buy\n 2 - Sell \n 3 - Rest\n 4 - Leave");
-		
-		
-		while(true) {
-			
-			
-			
-		switch(choice) {
-		
-		case 1:
-			buy();
-			break;
-		case 2:
-			break;
-		case 3:
-			rest();
-			break;
-		case 4:
-			JOptionPane.showMessageDialog(null, "Good hunting adventurer, come back soon!");
-			return;
-		}
-		
-		choice =  Help.insertNum("Need something else?\n 1 - Buy\n 2 - Sell \n 3 - Rest\n 4 - Leave");
-		
+
+		int choice = Help
+				.insertNum("Welcome adventurer! How can i help you?\n 1 - Buy\n 2 - Sell \n 3 - Rest\n 4 - Leave");
+
+		while (true) {
+
+			switch (choice) {
+
+			case 1:
+				buy();
+				break;
+			case 2:
+				sell();
+				break;
+			case 3:
+				rest();
+				break;
+			case 4:
+				JOptionPane.showMessageDialog(null, "Good hunting adventurer, come back soon!");
+				return;
+			}
+
+			choice = Help.insertNum("Need something else?\n 1 - Buy\n 2 - Sell \n 3 - Rest\n 4 - Leave");
+
 		}
 	}
 
 	
-	private void buy() {
-		
-		int choice = Help.insertNum("Take a look...\nFound something?");
-		
-		switch(choice) {
-		
-		case 1:
-		break;
-		case 2:
-			break;
-		case 3:
-			break;
-		case 4:
-			break;
-		case 5:
-			break;
-		case 6:
-			break;
-		}
-		
-		
-	}
+	// needs work, aint working how i want to
+	private void sell() {
 
-	private void rest() {
-		
-		if(player.getHitPoints()>=player.getHitPoints()-10) {
-			JOptionPane.showMessageDialog(null, "You took a nap");
+			
+		if(inventory.isEmpty()) {
+			JOptionPane.showMessageDialog(null, "Sry adventurer but you have nothing to sell...");
 			return;
 		}
 		
-		player.setHitPoints(player.getHitPoints()+10);
-		JOptionPane.showMessageDialog(null, "You took a nap, some of your HP is restored");
+		String[] it = new String[inventory.size()];
+		
+		
+		for(int i=0;i<inventory.size();i++) {
+			
+			it[i]=inventory.get(i).getName();
+			
+		}
+	
+		int choice = Help.insertNum("Enter number of the item u want to sell\n"+Arrays.toString(it));
+		
+		inventory.remove(choice-1);
+		
+		
+		
+		
+		
 		
 	}
 
-	private void explore() {
+	private void buy() {
 
-		Integer choice;
-		int rand = Help.randomNum(10, 1);
-		
-		if (rand <= 8) {
-			choice = Help.insertNum("You stumble upon a monster ? what will you do?\n(If u choose to fight you may later have a problem to runaway)\n 1 - Fight\n 2 - Run");
+		while (true) {
 
-			if (choice.equals(1)) {
+			int choice = Help.insertNum("Take a look...\nFound something?\n" + "1 - Small potion\n"
+					+ "2 - Medium potion\n" + "3 - Big potion\n" + "4 - Sword\n" + "5 - Axe\n" + "6 - Armor\n"
+					+ "7 - Go back for a drink");
 
-				fightOrRun();
-		
-			} 
+			switch (choice) {
+
+			case 1:
+				buyItem(0);
+				break;
+			case 2:
+				buyItem(1);
+				break;
+			case 3:
+				buyItem(2);
+				break;
+			case 4:
+				buyItem(3);
+				break;
+			case 5:
+				buyItem(4);
+				break;
+			case 6:
+				buyItem(5);
+				break;
+			case 7:
 				return;
-			
-
-		} else {
-			int gold = Help.randomNum(5, 1);
-			player.setGold(player.getGold() + gold);
-			JOptionPane.showMessageDialog(null, "You found a treasure chest!\nGained " + gold + " gold");
+			}
 		}
 
 	}
+
+	private void buyItem(int num) {
+
+		if (player.getGold() >= items.get(num).getValue()) {
+			inventory.add(items.get(num));
+		} else {
+			JOptionPane.showMessageDialog(null, "You don't have enough gold");
+		}
+
+	}
+
+	private void rest() {
+
+		if (player.getHitPoints() >= player.getHitPoints() - 10) {
+			JOptionPane.showMessageDialog(null, "You took a nap");
+			return;
+		}
+
+		player.setHitPoints(player.getHitPoints() + 10);
+		JOptionPane.showMessageDialog(null, "You took a nap, some of your HP is restored");
+
+	}
+
+	// ------------------------------------------------
 
 	private Player createPlayer() {
 
 		Player p = new Player();
 		p.setName(Help.enterName("Enter your name"));
-		p.setGold(10);
+		p.setGold(100);
 		p.setLevel(new Level(1, 0));
 		p.setRace(new Race(Help.enterName("Enter name for your race")));
 		p.setHitPoints(100);
@@ -218,8 +252,7 @@ public class Start {
 		level = new Level(2, 2500);
 		levels.add(level);
 		level = new Level(3, 5000);
-		
-		
+
 		// generate Items
 		Item item = new Item("Small potion", 5);
 		item.setHitPoints(15);
@@ -240,16 +273,36 @@ public class Start {
 		item = new Item("Armor", 35);
 		item.setHitPoints(20);
 		items.add(item);
-		
-		
-		
-		
 
 	}
 
 	// ---------------------------------
 	// Methods used for EXPLORE action
 	// ---------------------------------
+	private void explore() {
+
+		Integer choice;
+		int rand = Help.randomNum(10, 1);
+
+		if (rand <= 7) {
+			choice = Help.insertNum(
+					"You stumble upon a monster ? what will you do?\n(If u choose to fight you may later have a problem to runaway)\n 1 - Fight\n 2 - Run");
+
+			if (choice.equals(1)) {
+
+				fightOrRun();
+
+			}
+			return;
+
+		} else {
+			int gold = Help.randomNum(5, 1);
+			player.setGold(player.getGold() + gold);
+			JOptionPane.showMessageDialog(null, "You found a treasure chest!\nGained " + gold + " gold");
+		}
+
+	}
+
 	public void fightOrRun() {
 
 		Monster monster = monsters.get(Help.randomNum(8, 1));
@@ -266,9 +319,9 @@ public class Start {
 				monsterHp = monsterHp - player.getStrength();
 
 				Help.battleLog(player, monster);
-				
+
 				if (monsterHp <= 0) {
-					score+=50;
+					score += 50;
 					JOptionPane.showMessageDialog(null, "You slayed " + monster.getName());
 					return;
 				}
@@ -283,23 +336,22 @@ public class Start {
 					player.setHitPoints(player.getHitPoints() - monster.getStrength());
 					Help.battleLog(player, monster);
 				} else {
-					score+=50;
+					score += 50;
 					JOptionPane.showMessageDialog(null, "You slayed " + monster.getName());
 					return;
 				}
 
-				
-
 			}
 
 			if (Help.insertNum("What will youd do?\n 1 - Keep fighting\n 2 - Run") == 2) {
-				if(player.getAgility()+Help.randomNum(3, 1) > monster.getAgility()) {
+				if (player.getAgility() + Help.randomNum(3, 1) > monster.getAgility()) {
 					return;
-				}else {
+				} else {
 					player.setHitPoints(player.getHitPoints() - monster.getStrength());
-					JOptionPane.showMessageDialog(null, "You failed to run...\nRecieved "+monster.getStrength()+" dmg");
+					JOptionPane.showMessageDialog(null,
+							"You failed to run...\nRecieved " + monster.getStrength() + " dmg");
 				}
-				
+
 			}
 
 		}

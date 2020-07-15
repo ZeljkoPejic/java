@@ -71,5 +71,10 @@ public class Help {
 		return (int) (Math.random() * (max - min)) + min;
 
 	}
+	
+	public static Boolean check(int a, int b) {
+		
+		return a>=b ? true : false;
+	}
 
 }
