@@ -1,5 +1,7 @@
 package pejic.ljetnizadatak;
 
+import java.awt.Desktop;
+import java.net.URI;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -16,6 +18,7 @@ public class InputMethods {
 
 			s = JOptionPane.showInputDialog(poruka);
 
+			// na ovome treba poraditi
 			if (s.matches("[A-z]+")) {
 				return s;
 			}
@@ -46,7 +49,7 @@ public class InputMethods {
 
 	}
 
-	public static int unosBroja(String poruka) {
+	private static int unosRedniBroj(String poruka) {
 
 		while (true) {
 
@@ -60,33 +63,47 @@ public class InputMethods {
 
 	}
 
-	public static int findSifru() {
+	public static int findSifru(String poruka) {
 
 		Integer a;
 
-		try {
+		while (true) {
 
-			
-			a = unosBroja("Unesi redni broj osobe za brisanje");
+			try {
 
-			PreparedStatement query = Baza.otvoriVezu().prepareStatement("SELECT sifra FROM osoba");
+				a = unosRedniBroj(poruka);
 
-			ResultSet rs = query.executeQuery();
+				PreparedStatement query = Baza.otvoriVezu().prepareStatement("SELECT sifra FROM osoba");
 
-			while (rs.next()) {
-				if (a.equals(rs.getRow())) {
-					return rs.getInt("sifra");
-					
+				ResultSet rs = query.executeQuery();
+
+				while (rs.next()) {
+					if (a.equals(rs.getRow())) {
+						return rs.getInt("sifra");
+
+					}
 				}
+				JOptionPane.showMessageDialog(null, "Osoba pod rednim brojem " + a + " ne postoji");
 
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
 			}
-			
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
+		}
+
+	}
+
+	public static void goToAddress(String url) {
+
+		try {
+			Desktop desktop = java.awt.Desktop.getDesktop();
+			URI eraDijagramURL = new URI(url);
+			desktop.browse(eraDijagramURL);
+
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
-		return 0;
 	}
 
 }
