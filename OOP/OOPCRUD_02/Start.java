@@ -1,45 +1,36 @@
-package edunova.student;
-
-// 1. početak 02.07 - 21:40  ...   stop 03.07 - 1:19
-// 2. početak 03.07 - 13:50  ...  (pauza 14:25 - 14:45) stop 03.07 - 15:33
-// 3. početak 03.07 - 16:39  ...   stop 03.07 - 17:32
+package edunova.zgrada;
 
 import java.math.BigDecimal;
-import java.text.SimpleDateFormat;
+
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
-import javax.swing.JOptionPane;
 
 public class Start {
 
-	private int studId = 1;
-	private int smjerId = 1;
-	private List<Student> studenti = new ArrayList<Student>();
-	
+	private List<Zgrada> zgrade = new ArrayList<Zgrada>();
 
 	public Start() {
 
-		randomGenerator();
+		radnomGenerator();
 
 		while (true) {
+			menu();
 
-			izbornik();
+			switch (izbor()) {
 
-			switch (odabir()) {
 			case "1":
-				unosStudenta();
+				unosZgrada();
 				break;
 			case "2":
-				ispisStudenta();
+				ispisZgrada();
 				break;
 			case "3":
-				promjenaStudenta();
+				promjenaZgrada();
 				break;
 			case "4":
-				brisanjeStudenta();
+				brisanjeZgrada();
 				break;
-			case "r":
+			case "s":
 				dovidjenja();
 				return;
 
@@ -49,161 +40,179 @@ public class Start {
 
 	}
 
-	private void randomGenerator() {
+	private void ispisZgrada() {
 
-		do {
-
-			//Date datum = new Date(HelpMethods.godina(), HelpMethods.mjesec(), HelpMethods.dan());
-			SimpleDateFormat datum = new SimpleDateFormat("dd-MM-yyyy");
-			String date=datum.format(new Date());
-			
-			Smjer smjer = new Smjer(smjerId++, HelpMethods.boja(), HelpMethods.mreznoMjesto(), "0982256458", 1, true);
-
-			Student stud = new Student(studId++, datum, "K.Tomislava", new BigDecimal(1000), HelpMethods.kolicina(),
-					"@maro", smjer);
-
-			studenti.add(stud);
-
-		} while (studId <= 20);
+		for (Zgrada z : zgrade) {
+			System.out.println(z);
+		}
 
 	}
 
-	private void brisanjeStudenta() {
+	private void dovidjenja() {
 
-		int sifra = HelpMethods.unosBroja("Unesite sifru studenta kojeg želite obrisati( za brisanje svih 411 )");
+		Integer zbrojZnakova = 0;
+		System.out.println("Doviđenja");
 
-		if (sifra == 411) {
-			studenti.clear();
-			return;
+		for (Zgrada z : zgrade) {
+
+			zbrojZnakova += z.getStranica().zbrojStringa();
+			System.out.println("Zgrada pod šifrom " + z.getSifra() + " ima opis: " + z.getOpis());
+
 		}
 
-		for (Student s : studenti) {
+		System.out.println(
+				"Zbroj svih nizova u entitetu Stranica koji se nalaze u entitetu Zgrada iznosi: " + zbrojZnakova);
+	}
 
-			if (s.getSifra().equals(sifra)
-					&& HelpMethods.prisutan("Jeste li sigurni da želite obristi studenta pod šifrom " + s.getSifra())) {
-				studenti.remove(s);
-				System.out.println("Student je uspješno obrisan");
+	private void brisanjeZgrada() {
+
+		int id;
+
+		id = Pomoc.unosBroj("Unesi šifru zgrade koju želiš obrisati");
+
+		for (Zgrada z : zgrade) {
+
+			if (z.getSifra().equals(String.valueOf(id))
+					&& Pomoc.provjera("Jesi li siguran da želiš obrisati? da ili ne?")) {
+				
+				zgrade.remove(id - 1);
+				System.out.println("Zgrada je uspješno obrisana");
 				return;
-
 			}
-
 		}
+
+		
 	}
 
-	private void promjenaStudenta() {
+	private void promjenaZgrada() {
 
-		int sifra = HelpMethods.unosBroja("Unesite šifru studenta za promjenu");
-		SimpleDateFormat datum = new SimpleDateFormat("dd-MM-yyyy");
-		String date=datum.format(new Date());
+		int id;
 
-		// Student s = new Student();
+		id = Pomoc.unosBroj("Unesi šifru zgrade koju želiš mijenjati");
+		
+		for (Zgrada z : zgrade) {
 
-		try {
-
-			for (Student s : studenti) {
-				if (s.getSifra().equals(sifra)) {
-
-					s.setProdan(datum);
-					s.setAdresa(HelpMethods.unosString("Unesi adresu"));
-					s.setIznos(HelpMethods.unosDecimal("Unesi iznos"));
-					s.setKolicina(HelpMethods.unosDecimal("Unesi količinu"));
-					s.setTwitter(HelpMethods.unosString("Unesi twitter"));
-					s.setSmjer(unosSmjer());
-					System.out.println("Promjena je uspješna");
-
-				}
+			if (z.getSifra().equals(String.valueOf(id))){
+				unosZgrada(z);
+				
 			}
-
-		} catch (Exception e) {
-
-			JOptionPane.showMessageDialog(null, "Student pod tom šifrom ne postoji");
-
+				
 		}
+	}
+
+	
+
+	private void unosZgrada() {
+
+		Zgrada zgrada = new Zgrada();
+		zgrada.setSifra();
+		zgrada.setOpseg(new BigDecimal(Pomoc.unosBroj("Unesi opseg")));
+		zgrada.setOpis(Pomoc.unosString("Unesi opis"));
+		zgrada.setDopusten(Pomoc.provjera("Je li zgrada dopustena? Da ili Ne?"));
+		zgrada.setPrisutan(Pomoc.provjera("Je li zgrada prisutna? Da ili Ne?"));
+		zgrada.setDatum(Pomoc.unosDatum("Unesi datum\n( oblik npr 11-05-1990 dan-mjesec-godina )"));
+		zgrada.setStranica(unosStranica());
+
+		zgrade.add(zgrada);
+
+		System.out.println("Zgrada je uspješno unesena");
+
+	}
+	
+	private void unosZgrada(Zgrada zgrada) {
+
+		
+		
+		zgrada.setOpseg(new BigDecimal(Pomoc.unosBroj("Unesi opseg")));
+		zgrada.setOpis(Pomoc.unosString("Unesi opis"));
+		zgrada.setDopusten(Pomoc.provjera("Je li zgrada dopustena? Da ili Ne?"));
+		zgrada.setPrisutan(Pomoc.provjera("Je li zgrada prisutna? Da ili Ne?"));
+		zgrada.setDatum(Pomoc.unosDatum("Unesi datum\n( oblik npr 11-05-1990 dan-mjesec-godina )"));
+		zgrada.setStranica(unosStranica(zgrada.getStranica()));
+
+	
+		System.out.println("Promjena je upješno obavljena");
 
 	}
 
-	private void ispisStudenta() {
+	private Stranica unosStranica() {
 
-		System.out.println("------ISPIS------");
-		if (studenti.isEmpty()) {
-			System.out.println("LISTA JE PRAZNA!");
-		}
-		for (Student s : studenti) {
+		Stranica stranica = new Stranica();
+		stranica.setSifra();
+		stranica.setIme(Pomoc.unosString("Unesi ime stranice"));
+		stranica.setTwitter(Pomoc.unosString("Unesi twitter acc"));
+		stranica.setPostanskiBroj(Pomoc.unosString("Unesi poštanski broj"));
+		stranica.setZabranjen(Pomoc.provjera("Je li stranica zabranjena? Da ili Ne?"));
+		stranica.setProdan(Pomoc.unosDatum("Unesi datum\n( oblik npr 11-05-1990 dan-mjesec-godina )"));
 
-			System.out.println(s);
+		return stranica;
 
-		}
+	}
+	
+	private Stranica unosStranica(Stranica stranica) {
+
+		
+		
+		stranica.setIme(Pomoc.unosString("Unesi ime stranice"));
+		stranica.setTwitter(Pomoc.unosString("Unesi twitter acc"));
+		stranica.setPostanskiBroj(Pomoc.unosString("Unesi poštanski broj"));
+		stranica.setZabranjen(Pomoc.provjera("Je li stranica zabranjena? Da ili Ne?"));
+		stranica.setProdan(Pomoc.unosDatum("Unesi datum\n( oblik npr 11-05-1990 dan-mjesec-godina )"));
+
+		return stranica;
 
 	}
 
-	private void unosStudenta() {
+	private String izbor() {
 
-		SimpleDateFormat datum = new SimpleDateFormat("dd-MM-yyyy");
-		String date=datum.format(new Date());
+		return Pomoc.glavniIzbor("Odaberi akciju");
+	}
 
-		Student student = new Student(studId++, datum, HelpMethods.unosString("Unesi adresu"),
-				HelpMethods.unosDecimal("Unesi iznos"), HelpMethods.unosDecimal("Unesi količinu"),
-				HelpMethods.unosString("Unesi twitter"), unosSmjer());
+	private void menu() {
+		System.out.println("*************************");
+		System.out.println(" 1 - Unos zgrade");
+		System.out.println(" 2 - Ispis zgrada");
+		System.out.println(" 3 - Promjena zgrade");
+		System.out.println(" 4 - Brisanje zgrade");
+		System.out.println(" s - Izlaz iz aplikacije");
+		System.out.println("*************************");
 
-		studenti.add(student);
-		System.out.println("Novi student je uspješno kreiran");
+	}
+
+	private void radnomGenerator() {
+		do {
+			Zgrada zgrada = new Zgrada();
+			zgrada.setSifra();
+			zgrada.setOpseg(Pomoc.randomDeciaml());
+			zgrada.setOpis(Pomoc.randomString());
+			zgrada.setDopusten(Pomoc.randomProvjera());
+			zgrada.setPrisutan(Pomoc.randomProvjera());
+			zgrada.setDatum(Pomoc.randomDatum());
+			zgrada.setStranica(randomStranica());
+
+			zgrade.add(zgrada);
+
+		} while (zgrade.size() < 20);
+
+	}
+
+	private Stranica randomStranica() {
+
+		Stranica stranica = new Stranica();
+		stranica.setSifra();
+		stranica.setIme(Pomoc.randomNaziv());
+		stranica.setTwitter(Pomoc.randomTwitter());
+		stranica.setPostanskiBroj(Pomoc.randomPostanskiBroj());
+		stranica.setZabranjen(Pomoc.randomProvjera());
+		stranica.setProdan(Pomoc.randomDatum());
+
+		return stranica;
 
 	}
 
 	public static void main(String[] args) {
 
 		new Start();
-
-	}
-
-	private void izbornik() {
-
-		System.out.println("*************************");
-		System.out.println(" 1 - Unos studenta");
-		System.out.println(" 2 - Ispis studenta");
-		System.out.println(" 3 - Promjena studenta");
-		System.out.println(" 4 - Brisanje studenta");
-		System.out.println(" r - Izlaz iz aplikacije");
-		System.out.println("*************************");
-
-	}
-
-	private String odabir() {
-		String izbor;
-		while (true) {
-			izbor = JOptionPane.showInputDialog("Odaberi akciju");
-			if (izbor.length() > 1 || izbor.trim().isEmpty() || (!izbor.matches("[1-4]+") && !izbor.equals("r"))) {
-				JOptionPane.showMessageDialog(null, "Krivi odabir");
-				continue;
-			}
-			return izbor;
-
-		}
-
-	}
-
-	private Smjer unosSmjer() {
-
-		Smjer smjer = new Smjer(smjerId++, HelpMethods.unosString("Unesi boju"),
-				HelpMethods.unosString("Unesi naziv mreze"), HelpMethods.unosTelefona("Broj telefona"),
-				HelpMethods.unosBroja("Unesi broj"), HelpMethods.prisutan("Prisutan Da ili Ne ?"));
-
-		return smjer;
-
-	}
-
-	private void dovidjenja() {
-
-		int suma = 0;
-		System.out.println("Doviđenja");
-
-		for (Student s : studenti) {
-			suma += s.getSmjer().zbrojStringa();
-			System.out.println("Količina studenta pod šifrom " + s.getSifra() + " iznosi " + s.getKolicina());
-		}
-
-		System.out.println("Zbroj svih nizova u klasi smjer iznosi: " + suma);
-
 	}
 
 }
