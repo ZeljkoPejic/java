@@ -1,36 +1,147 @@
 package pejic.ljetnizadatak;
 
 import java.awt.Desktop;
+
 import java.net.URI;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import javax.swing.JOptionPane;
+import java.util.Scanner;
 
 public class InputMethods {
 
-	
-	public static String unosImePrezime(String poruka) {
+	private static Scanner scanner = new Scanner(System.in);
 
-		 return JOptionPane.showInputDialog(poruka);
+	// metoda koja služi za kreiranje osobe to jest prikupljanje
+	// podataka o toj osobi te proslijedi podatke kako bi se
+	// izvršilo kreiranje osobe
+	public static void unosOsobe() {
+
+		String ime, prezime, oib;
+
+		ime = unosImePrezime("Unesi ime osobe: ");
+		prezime = unosImePrezime("Unesi prezime osobe: ");
+		oib = unosOIB("Unesi OIB osobe: ");
+
+		CRUDMethods.unosOsobeUBazu(ime, prezime, oib);
+
+		System.out.println("----Osoba je uspješno kreirana----");
 
 	}
 
-	public static String unosOIB(String poruka) {
+	// metoda koja obrađuje podatke i radi provjeru je li osoba pod
+	// nekih rednim brojem postoji te proslijedi podatke na
+	// daljnju obradu gdje se izvršava update te osobe
+	public static void promjenaOsobe() {
+
+		try {
+		int sifra = unosRedniBroj("Unesi redni broj osobe za promjenu: ");
+
+		if (sifra == 0) {
+			System.out.println("----Nepostojeća osoba----");
+			return;
+		}
+
+		String ime, prezime, oib;
+
+		ime = unosImePrezime("Unesi ime osobe za promjenu: ");
+		prezime = unosImePrezime("Unesi prezime osobe za promjenu: ");
+		oib = unosOIB("Unesi OIB osobe za promjenu: ");
+
+		CRUDMethods.promjenaOsobeUBazi(sifra, ime, prezime, oib);
+
+		System.out.println("----Promjena osobe je uspješno izvršena----");
+		}catch(Exception e) {
+			System.out.println("Krivi unos");
+		}
+	}
+
+	// metoda koja radi provjeru je li osoba pod nekim rednim
+	// brojem postoji te proslijedi taj podatak na daljnju obradu
+	// za brisanje te osobe
+	public static void brisanjeOsobe() {
+
+		
+		try {
+		int sifra = unosRedniBroj("Unesi redni broj osobe za brisanje: ");
+
+		if (sifra == 0) {
+			System.out.println("----Nepostojeća osoba----");
+			return;
+		}
+
+		CRUDMethods.brisanjeOsobeUBazi(sifra);
+
+		System.out.println("----Osoba je uspješno obrisana----");
+		}catch(Exception e) {
+			System.out.println("Krivi unos");
+			
+		}
+	}
+
+	// metoda koja vraća ime i prezime kao String type,
+	// pod uvjetom da nije prazno i da sadrži bar jedno abecedno slovo
+	private static String unosImePrezime(String poruka) {
 
 		String s;
 
 		while (true) {
 
-			s = JOptionPane.showInputDialog(poruka);
+			System.out.print(poruka);
+			s = scanner.nextLine();
 
-			if (s.matches("[0-9]+") && s.length() == 11) {
+			if (!s.isEmpty() && s.matches(".*[a-zA-Z]+.*")) {
+
 				return s;
-			} else if (s.isEmpty()) {
+			}
+
+		}
+
+	}
+
+	// radi provjeru OIB-a i ako je ispravan vraća ga nazad
+	private static String unosOIB(String poruka) {
+
+		String oib;
+
+		while (true) {
+
+			System.out.print(poruka);
+			oib = scanner.nextLine();
+
+			if (oib.isEmpty()) {
 				return null;
 			}
 
-			JOptionPane.showMessageDialog(null, "Krivi unos OIB-a");
+			if (oib.length() != 11) {
+				System.out.println("----Krivi unos OIB-a----");
+				continue;
+			}
+
+			try {
+				Long.parseLong(oib);
+			} catch (NumberFormatException e) {
+				e.printStackTrace();
+			}
+
+			int a = 10;
+
+			for (int i = 0; i < 10; i++) {
+				a = a + Integer.parseInt(oib.substring(i, i + 1));
+				a = a % 10;
+				if (a == 0)
+					a = 10;
+				a *= 2;
+				a = a % 11;
+			}
+			int kontrolni = 11 - a;
+			if (kontrolni == 10) {
+				kontrolni = 0;
+			}
+
+			if (kontrolni == Integer.parseInt(oib.substring(10))) {
+				return oib;
+			}
 
 		}
 
@@ -38,45 +149,60 @@ public class InputMethods {
 
 	private static int unosRedniBroj(String poruka) {
 
-		while (true) {
+		int redniBroj;
+		Integer sifra;
+		String izbor = "";
 
-			try {
-				return Integer.parseInt(JOptionPane.showInputDialog(poruka));
-			} catch (Exception e) {
-				JOptionPane.showMessageDialog(null, "Krivi unos");
+		search: while (true) {
+
+			System.out.print(poruka);
+			redniBroj = scanner.nextInt();
+			//scanner.nextLine();
+
+			sifra = findSifru(redniBroj);
+
+			if (sifra.equals(0)) {
+				while (true) {
+					System.out.println("Je li želite nastaviti željenu akciju? Da ili Ne?");
+					izbor = scanner.nextLine();
+
+					if (izbor.toLowerCase().equals("ne")) {
+						return 0;
+					} else if (izbor.toLowerCase().equals("da")) {
+						continue search;
+					}
+
+				}
+
 			}
 
-		}
+			return sifra;
 
+		}
 	}
 
-	public static int findSifru(String poruka) {
+	private static int findSifru(Integer sifra) {
 
-		Integer a;
+		try {
 
-		while (true) {
+			PreparedStatement query = Baza.otvoriVezu().prepareStatement("SELECT sifra FROM osoba");
 
-			try {
+			ResultSet rs = query.executeQuery();
 
-				a = unosRedniBroj(poruka);
+			while (rs.next()) {
+				if (sifra.equals(rs.getRow())) {
+					return rs.getInt("sifra");
 
-				PreparedStatement query = Baza.otvoriVezu().prepareStatement("SELECT sifra FROM osoba");
-
-				ResultSet rs = query.executeQuery();
-
-				while (rs.next()) {
-					if (a.equals(rs.getRow())) {
-						return rs.getInt("sifra");
-
-					}
 				}
-				JOptionPane.showMessageDialog(null, "Osoba pod rednim brojem " + a + " ne postoji");
-
-			} catch (SQLException e) {
-		
-				e.printStackTrace();
 			}
+			System.out.println("----Osoba pod rednim brojem " + sifra + " ne postoji----");
+
+		} catch (SQLException e) {
+
+			e.printStackTrace();
 		}
+
+		return 0;
 
 	}
 

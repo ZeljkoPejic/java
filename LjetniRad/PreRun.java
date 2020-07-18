@@ -13,16 +13,16 @@ public class PreRun {
 			switch (izbor()) {
 
 			case 1:
-				CRUDMethods.unosOsobe();
+				InputMethods.unosOsobe();;
 				break;
 			case 2:
-				CRUDMethods.ispisOsoba();
+				CRUDMethods.ispisOsobaIzBaze();
 				break;
 			case 3:
-				CRUDMethods.promjenaOsobe();
+				InputMethods.promjenaOsobe();
 				break;
 			case 4:
-				CRUDMethods.brisanjeOsobe();
+				InputMethods.brisanjeOsobe();
 				break;
 			case 5:
 				idiNaEraDijagram();
@@ -69,7 +69,7 @@ public class PreRun {
 
 	}
 
-	// vraće integer vrijednost od 1-7 ovisno o odabranoj akciji
+	// vraća integer vrijednost
 	private int izbor() {
 
 		while (true) {
