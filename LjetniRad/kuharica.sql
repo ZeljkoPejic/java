@@ -1,5 +1,5 @@
 drop database if exists kuharica;
-create database kuharica CHARACTER SET utf8 COLLATE utf8_general_ci;
+create database kuharica character set utf8mb4 collate utf8mb4_unicode_ci;
 use kuharica;
 
 create table osoba(
