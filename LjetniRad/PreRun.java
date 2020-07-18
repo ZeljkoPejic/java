@@ -40,7 +40,7 @@ public class PreRun {
 
 	}
 
-	// metoda te šalje na url gje se nalazi folder sa kodom aplikacije
+	// metoda te šalje na url foldera sa kodom aplikacije
 	private void idiNaKodAplikacije() {
 
 		InputMethods.goToAddress("https://github.com/ZeljkoPejic/java/tree/master/LjetniRad");

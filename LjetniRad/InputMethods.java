@@ -5,27 +5,14 @@ import java.net.URI;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-
 import javax.swing.JOptionPane;
 
 public class InputMethods {
 
+	
 	public static String unosImePrezime(String poruka) {
 
-		String s;
-
-		while (true) {
-
-			s = JOptionPane.showInputDialog(poruka);
-
-			// na ovome treba poraditi
-			if (s.matches("[A-z]+")) {
-				return s;
-			}
-
-			JOptionPane.showMessageDialog(null, "Krivi unos");
-
-		}
+		 return JOptionPane.showInputDialog(poruka);
 
 	}
 
@@ -86,7 +73,7 @@ public class InputMethods {
 				JOptionPane.showMessageDialog(null, "Osoba pod rednim brojem " + a + " ne postoji");
 
 			} catch (SQLException e) {
-				// TODO Auto-generated catch block
+		
 				e.printStackTrace();
 			}
 		}
@@ -97,8 +84,8 @@ public class InputMethods {
 
 		try {
 			Desktop desktop = java.awt.Desktop.getDesktop();
-			URI eraDijagramURL = new URI(url);
-			desktop.browse(eraDijagramURL);
+			URI goTo = new URI(url);
+			desktop.browse(goTo);
 
 		} catch (Exception e) {
 			e.printStackTrace();
