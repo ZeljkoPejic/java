@@ -53,8 +53,6 @@ public class CRUDMethods {
 
 	// UPDATE
 	public static void promjenaOsobeUBazi(int redniBroj, String ime, String prezime, String oib) {
-
-		ispisOsobaIzBaze();
 		
 		try {
 
@@ -79,8 +77,6 @@ public class CRUDMethods {
 
 	// DELETE
 	public static void brisanjeOsobeUBazi(int redniBroj) {
-
-		ispisOsobaIzBaze();
 
 		try {
 

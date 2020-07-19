@@ -1,7 +1,5 @@
 package pejic.ljetnizadatak;
 
-import javax.swing.JOptionPane;
-
 public class PreRun {
 
 	public PreRun() {
@@ -10,10 +8,11 @@ public class PreRun {
 
 			izbornik();
 
-			switch (izbor()) {
+			switch (InputMethods.izbor()) {
 
 			case 1:
-				InputMethods.unosOsobe();;
+				InputMethods.unosOsobe();
+				;
 				break;
 			case 2:
 				CRUDMethods.ispisOsobaIzBaze();
@@ -69,21 +68,6 @@ public class PreRun {
 
 	}
 
-	// vraća integer vrijednost
-	private int izbor() {
-
-		while (true) {
-
-			try {
-				
-				return Integer.parseInt(JOptionPane.showInputDialog("Odaberite akciju"));
-
-			} catch (Exception e) {
-
-				JOptionPane.showMessageDialog(null, "Krivi unos");
-
-			}
-		}
-	}
+	
 
 }
