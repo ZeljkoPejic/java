@@ -32,7 +32,7 @@ public class InputMethods {
 			} catch (Exception e) {
 
 				System.out.println("----Krivi unos----");
-
+				scanner.nextLine();
 			}
 		}
 	}
