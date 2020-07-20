@@ -13,18 +13,18 @@ import java.util.logging.Logger;
 
 /**
  *
- * @author CODLasay
+ * @author ...
  */
 public class CRUDmetode {
     
-    public void createOsoba(String ime, String prezime, String oib){
+    public void createOsobe(String ime, String prezime, String oib){
         
         try {
             PreparedStatement query = Baza.otvoriVezu().prepareStatement("INSERT INTO osoba (ime,prezime,OIB)" + " VALUES (?,?,?)");
             
             query.setString(1, ime);
-            query.setString(1, prezime);
-            query.setString(1, oib);
+            query.setString(2, prezime);
+            query.setString(3, oib);
             
             query.executeUpdate();
             
@@ -45,7 +45,7 @@ public class CRUDmetode {
                                   
             while(rs.next()){
                 if(rs.getString(4)==null){
-                    oib = "nije unešen";
+                    oib = "nije unesen";
                 }else{
                     oib = rs.getString(4);
                 }
@@ -55,7 +55,39 @@ public class CRUDmetode {
         } catch (SQLException ex) {
             Logger.getLogger(CRUDmetode.class.getName()).log(Level.SEVERE, null, ex);
         }
+               
+    }
+    
+    public void updateOsobe(int sifra, String ime, String prezime, String oib){
         
+        try {
+            PreparedStatement query = Baza.otvoriVezu().prepareStatement("UPDATE osoba SET ime=?, prezime=?, OIB=? WHERE sifra=?;");
+            
+            query.setString(1, ime);
+            query.setString(2, prezime);
+            query.setString(3, oib);
+            query.setInt(4, sifra);
+            
+            query.executeUpdate();
+            
+        } catch (SQLException ex) {
+            Logger.getLogger(CRUDmetode.class.getName()).log(Level.SEVERE, null, ex);
+        }
+               
+    }
+    
+    public void deleteOsobe(int sifra){
+        
+        try {
+            PreparedStatement query = Baza.otvoriVezu().prepareStatement("DELETE FROM osoba WHERE sifra = ?;");
+            
+            query.setInt(1, sifra);
+            
+            query.executeUpdate();
+            
+        } catch (SQLException ex) {
+            Logger.getLogger(CRUDmetode.class.getName()).log(Level.SEVERE, null, ex);
+        }
         
     }
     

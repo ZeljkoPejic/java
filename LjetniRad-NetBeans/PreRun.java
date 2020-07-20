@@ -7,10 +7,12 @@ package pejic.ljetnizadatak;
 
 /**
  *
- * @author CODLasay
+ * @author ...
  */
 public class PreRun {
 
+    private InputMethods input = new InputMethods();
+    
     public PreRun() {
 
         while (true) {
@@ -18,31 +20,34 @@ public class PreRun {
             switch (izbornik()) {
 
                 case 1:
-                    
+                    input.unosOsobe();
                     break;
                 case 2:
-                    InputMethods.ispis();
+                    input.ispis();
                     break;
                 case 3:
+                    input.promjenaOsobe();
                     break;
                 case 4:
+                    input.brisanjeOsobe();
                     break;
                 case 5:
-                    InputMethods.goToAddress("https://github.com/ZeljkoPejic/hellojp22/blob/master/era.jpg");
+                    input.goToAddress("https://github.com/ZeljkoPejic/hellojp22/blob/master/era.jpg");
                     break;
                 case 6:
-                    InputMethods.goToAddress("https://github.com/ZeljkoPejic/java/tree/master/LjetniRad");
+                    input.goToAddress("https://github.com/ZeljkoPejic/java/tree/master/LjetniRad-NetBeans");
                     break;
                 case 7:
                     System.out.println("Doviđenja");
-                    break;
+                    Baza.zatvoriVezu();
+                    return;
 
             }
         }
 
     }
 
-    public int izbornik() {
+    private int izbornik() {
 
         System.out.println("******************************");
         System.out.println(" 1 - Kreiraj novu osobu");
@@ -54,7 +59,7 @@ public class PreRun {
         System.out.println(" 7 - Izlaz iz aplikacije");
         System.out.println("******************************");
 
-        return InputMethods.akcija();
+        return input.akcija();
     }
 
 }
